@@ -1,0 +1,100 @@
+.container {
+    background-color: rgba(0, 0, 0, 0.05); /* Màu nền với độ trong suốt */
+    color: black; /* Màu chữ */
+    padding: 20px; /* Khoảng cách lề bên trong của div */
+    border-radius: 10px; /* Bo góc của div */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Đổ bóng cho div */
+    width: 300px; /* Độ rộng của div */
+    height: auto;
+    margin: 50px auto; /* Canh giữa div */
+}
+
+.child-container {
+    background-color: rgba(0, 0, 0, 0.005); /* Màu nền với độ trong suốt */
+    color: black; /* Màu chữ */
+    padding: 1px 10px; /* Khoảng cách lề bên trong của div */
+    border-radius: 10px; /* Bo góc của div */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25); /* Đổ bóng cho div */
+    width: auto; /* Độ rộng của div */
+    margin: 20px auto; /* Canh giữa div */
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 5px;
+}
+
+.text {
+    padding-bottom: 0px;
+    font-weight: 1000;
+}
+
+.input {
+    line-height: 1px;
+}
+
+input[type="text"] {
+    padding: 2px 1px;
+    border-radius: 2px;
+    border-width: 1px;
+    cursor: pointer;
+    width: auto;
+}
+
+.button {
+    margin-top: 20px;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    
+}
+
+.button:hover {
+    background-color: #45a049;
+}
+
+
+#sh_thuadat, #sh_bando, #chitiet {
+    line-height: 5px;
+    font-size: 15px;
+}
+
+#noidung {
+    font-size: 13px;
+    line-height: 20px;
+    
+}
+
+/*Css cho thông báo fail khi không tồn tại số hiệu bản đồ, thửa*/
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Màu nền với độ trong suốt */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#fail-notification {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.75); /* Màu nền thông báo fail */
+    padding: 20px;
+    width: 25%;
+    border-radius: 5px;
+    text-align: center;
+    color: white;
+}
+
+.fail-notification h2 {
+    margin-bottom: 10px;
+}
+
+.fail-notification p {
+    margin-bottom: 0;
+}
+/*Css cho thông báo fail khi không tồn tại số hiệu bản đồ, thửa*/

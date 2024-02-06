@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TraCuuThongTinThuaDat</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <!-- <script src="script.js"></script> -->
+
+</head>
+<body>
+    <div id="overlay">
+        <div id="fail-notification">
+            <p id="fail_detail"></p>
+            <div class="button" onclick="turnBack()">
+                OK
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <input type="file" id="fileInput" accept=".xlsx, .xls">
+        <h2>Tra cứu thông tin giá đất</h2>
+        <div class="input">
+            <p class="text">Số Hiệu Bản Đồ:</p>
+            <input type="number" name="so_hieu_ban_do" placeholder="" id="shbando_field">
+        </div>
+        <div class="input">
+            <p class="text">Số Hiệu Thửa:</p>
+            <input type="number" name="so_hieu_thua" placeholder="" id="shthua_field">
+        </div>
+        <div class="button" onclick="getValue()">
+            Tra Cứu Và Hiển Thị
+        </div>
+        <div class="child-container">
+            <p>Thông Tin Thửa Đất:</p>
+            <p id="sh_bando">Số Hiệu Bản Đồ: </p>
+            <p id="sh_thuadat">Số Hiệu Thửa Đất: </p>
+            <p id="chitiet">Chi Tiết:</p>
+            <p id="noidung"></p>
+        </div>
+    </div>
+    <script>
+        var jsonData = {};
+        var is_file_uploaded = 0;
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            var file = e.target.files[0];
+            if (file) {
+                readExcelFile(file);
+            }
+        });
+
+        function readExcelFile(file) {
+            var reader = new FileReader();
+
+            reader.onload = function(event) {
+                var data = event.target.result;
+                var workbook = XLSX.read(data, { type: 'binary' });
+
+                // Chuyển đổi dữ liệu từ Excel sang JSON
+                jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1 });
+                
+            };
+            is_file_uploaded = 1;
+            reader.readAsBinaryString(file);
+        }
+
+
+        function getValue() {
+            if(!is_file_uploaded)
+            {
+                document.getElementById("overlay").style.width = "100%";
+                document.getElementById("fail-notification").style.display = "block";
+                document.getElementById("fail_detail").innerText = "";
+                document.getElementById("fail_detail").innerText += "Vui lòng upload file!";
+                return;
+            }
+            var flag = 0;
+            var sh_bando = document.getElementById("shbando_field").value;
+            var sh_bando_flag = 0;
+            if(sh_bando != "")
+                sh_bando_flag = 1;
+            // document.getElementById("sh_bando").innerText = "Số Hiệu Bản Đồ:";
+            // document.getElementById("sh_bando").innerText += " " + sh_bando;
+            
+
+            // Lấy giá trị từ trường input
+            var sh_thua = document.getElementById("shthua_field").value;
+            var sh_thua_flag = 0;
+            if(sh_thua != "")
+                sh_thua_flag = 1;
+            if(!sh_bando_flag || !sh_thua_flag)
+            {
+                document.getElementById("overlay").style.width = "100%";
+                document.getElementById("fail-notification").style.display = "block";
+                document.getElementById("fail_detail").innerText = "";
+                document.getElementById("fail_detail").innerText += "Vui lòng nhập đầy đủ thông tin !";
+            }
+
+
+            // Hiển thị giá trị lấy được
+            document.getElementById("sh_bando").innerText = "Số Hiệu Bản Đồ:";
+            document.getElementById("sh_bando").innerText += " " + sh_bando;
+
+            document.getElementById("sh_thuadat").innerText = "Số Hiệu Thửa Đất:";
+            document.getElementById("sh_thuadat").innerText += " " + sh_thua;
+    
+            for(var i = 0; i < Object.keys(jsonData).length ; i++)
+            {
+                if(sh_bando == jsonData[i][3] && sh_thua == jsonData[i][4])
+                {
+                    flag = 1;
+                    document.getElementById("noidung").style.marginTop = "-25px";
+                    document.getElementById("noidung").innerText = "";
+                    for (var j = 0 ; j < 13 ; j++)
+                    {
+                        insertData(jsonData[0][j], jsonData[i][j]);
+                    }
+                }
+            }
+            if (!flag)
+            {
+                document.getElementById("noidung").innerText = "";
+                document.getElementById("noidung").style.marginTop = "0px";
+                document.getElementById("overlay").style.width = "100%";
+                document.getElementById("fail-notification").style.display = "block";
+                document.getElementById("fail_detail").innerText = "";
+                document.getElementById("fail_detail").innerText += "Thông tin không tồn tại";
+            }
+        }
+
+        function turnBack()
+        {
+            document.getElementById("overlay").style.width = "0%";
+            document.getElementById("fail-notification").style.display = "none";
+        }
+
+        function insertData(name, value)
+        {
+            document.getElementById("noidung").innerText += `\n${name} ${value}`;
+        }
+    </script>
+</body>
+</html>
